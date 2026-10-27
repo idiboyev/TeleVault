@@ -1,11 +1,15 @@
 (() => {
 /**
- * Telegram Media Downloader - DOM discovery & button placement
+ * TeleVault — DOM discovery & button placement
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  * Media URLs are always resolved at click time, so buttons never hold stale links.
  */
 
 const U = () => window.TMD_UTILS;
 const D = () => window.TMD_DOWNLOADER;
+
+/** Removes our buttons from a container (used when the content turns out to be protected). */
+const dropButtons = (root) => root?.querySelectorAll(".tel-download").forEach((b) => b.remove());
 
 const makeButton = (className, html, onClick) => {
   const btn = document.createElement("button");
@@ -39,6 +43,7 @@ const nativeWebAButtons = (root) =>
 const downloadCurrentWebA = () => {
   const slide = document.querySelector("#MediaViewer .MediaViewerSlide--active");
   if (!slide) return;
+  if (U().isProtected(slide)) return U().logger.error(U().PROTECTED_MSG);
   const videoUrl = U().getMediaSource(slide.querySelector(".VideoPlayer video, video"));
   const imageUrl = U().getMediaSource(slide.querySelector(".MediaViewerContent img"));
   if (videoUrl) D().telDownloadVideo(videoUrl);
@@ -48,6 +53,7 @@ const downloadCurrentWebA = () => {
 const downloadCurrentWebAStory = () => {
   const story = document.getElementById("StoryViewer");
   if (!story) return;
+  if (U().isProtected(story)) return U().logger.error(U().PROTECTED_MSG);
   const videoUrl = U().getMediaSource(story.querySelector("video"));
   if (videoUrl) return D().telDownloadVideo(videoUrl);
   const images = story.querySelectorAll("img.PVZ8TOWS, img");
@@ -58,7 +64,9 @@ const downloadCurrentWebAStory = () => {
 const processWebA = () => {
   // Stories
   const story = document.getElementById("StoryViewer");
-  if (story) {
+  if (story && U().isProtected(story)) {
+    dropButtons(story);
+  } else if (story) {
     const header =
       story.querySelector(".GrsJNw3y") || story.querySelector(".DropdownMenu")?.parentNode;
     if (header && !header.querySelector(".tel-download") && !nativeWebAButtons(header).length) {
@@ -72,6 +80,11 @@ const processWebA = () => {
   const slide = document.querySelector("#MediaViewer .MediaViewerSlide--active");
   const actions = document.querySelector("#MediaViewer .MediaViewerActions");
   if (!slide || !actions) return;
+  if (U().isProtected(slide)) {
+    dropButtons(actions);
+    dropButtons(slide);
+    return;
+  }
 
   const video = slide.querySelector(".VideoPlayer video, video");
   const image = slide.querySelector(".MediaViewerContent img");
@@ -102,6 +115,7 @@ const webKIcon = () => `<span class="tgico button-icon">${U().DOWNLOAD_ICON}</sp
 const downloadCurrentWebK = () => {
   const viewer = document.querySelector(".media-viewer-whole");
   if (!viewer) return;
+  if (U().chatProtected() || U().isProtected(viewer)) return U().logger.error(U().PROTECTED_MSG);
   const aspecter = viewer.querySelector(".media-viewer-movers .media-viewer-aspecter");
   const videoUrl = U().getMediaSource(aspecter?.querySelector("video"));
   const imageUrl = U().getMediaSource(aspecter?.querySelector("img.thumbnail, img.media-photo"));
@@ -129,9 +143,12 @@ const getPinnedMedia = () => {
 const processWebK = () => {
   // 1. Pinned audio / voice
   const pinnedUtils = document.querySelector(".pinned-audio .pinned-container-wrapper-utils");
-  if (pinnedUtils && !pinnedUtils.querySelector(".tel-download")) {
+  if (pinnedUtils && U().chatProtected()) {
+    dropButtons(pinnedUtils);
+  } else if (pinnedUtils && !pinnedUtils.querySelector(".tel-download")) {
     pinnedUtils.appendChild(
       makeButton("btn-icon tgico-download _tel_download_button_pinned_container", webKIcon(), () => {
+        if (U().chatProtected()) return U().logger.error(U().PROTECTED_MSG);
         const media = getPinnedMedia();
         if (!media) return U().logger.error("Pinned media URL not found");
         media.isAudio ? D().telDownloadAudio(media.url) : D().telDownloadVideo(media.url);
@@ -141,8 +158,11 @@ const processWebK = () => {
 
   // 2. Stories
   const stories = document.getElementById("stories-viewer");
-  if (stories) {
+  if (stories && U().isProtected(stories)) {
+    dropButtons(stories);
+  } else if (stories) {
     const onStory = () => {
+      if (U().isProtected(stories)) return U().logger.error(U().PROTECTED_MSG);
       const videoUrl = U().getMediaSource(stories.querySelector("video.media-video, video"));
       if (videoUrl) return D().telDownloadVideo(videoUrl);
       const imageUrl = U().getMediaSource(stories.querySelector("img.media-photo"));
@@ -165,12 +185,12 @@ const processWebK = () => {
   const buttons = viewer.querySelector(".media-viewer-topbar .media-viewer-buttons");
   if (!aspecter || !buttons) return;
 
-  // Un-hide Telegram's own hidden buttons (restricted channels hide them)
-  buttons.querySelectorAll("button.btn-icon.hide").forEach((btn) => {
-    if (btn.textContent === U().DOWNLOAD_ICON || btn.textContent === U().FORWARD_ICON) {
-      btn.classList.remove("hide");
-    }
-  });
+  // Protected chats ("Restrict saving content"): Telegram hides its own download button,
+  // and TeleVault respects that — no buttons of ours either
+  if (U().chatProtected() || U().isProtected(viewer)) {
+    dropButtons(viewer);
+    return;
+  }
 
   const hasMedia =
     U().getMediaSource(aspecter.querySelector("video")) ||

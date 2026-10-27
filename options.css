@@ -38,6 +38,9 @@ nav a { color: var(--muted); text-decoration: none; padding: 8px 12px; border-ra
 nav a:hover { color: var(--text); background: var(--surface); }
 nav a.active { color: var(--accent); background: var(--accent-soft); }
 .kbd-hint { margin-top: 28px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.credit { margin-top: 18px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.credit a { color: var(--accent); text-decoration: none; }
+.credit a:hover { text-decoration: underline; }
 kbd { font: 600 11px/1 system-ui, sans-serif; padding: 3px 6px; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; background: var(--surface); color: var(--text); }
 
 main section { margin-bottom: 56px; }

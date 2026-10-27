@@ -1,5 +1,6 @@
 /**
- * Telegram Media Downloader - Storage bridge (ISOLATED world)
+ * TeleVault — Storage bridge (ISOLATED world)
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  * The page (MAIN world) scripts cannot use chrome.* APIs, so this script relays
  * settings, download history, checkpoints and stats between chrome.storage and the page.
  */
@@ -34,7 +35,7 @@
     try {
       await chrome.storage.sync.set({ [CLOUD + peerId]: compact(value || { cleared: true }) });
     } catch (e) {
-      console.warn("[Tel Download] cloud checkpoint:", e?.message || e);
+      console.warn("[TeleVault] cloud checkpoint:", e?.message || e);
     }
   };
 
@@ -116,7 +117,7 @@
         await chrome.storage.local.set({ stats });
       }
     } catch (err) {
-      console.error("[Tel Download] bridge:", err);
+      console.error("[TeleVault] bridge:", err);
     }
   };
 

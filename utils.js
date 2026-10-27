@@ -1,19 +1,19 @@
 /**
- * Telegram Media Downloader - Shared Utilities
+ * TeleVault — Shared Utilities
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  */
 (() => {
   const logger = {
     info: (message, fileName = null) => {
-      console.log(`[Tel Download] ${fileName ? `${fileName}: ` : ""}${message}`);
+      console.log(`[TeleVault] ${fileName ? `${fileName}: ` : ""}${message}`);
     },
     error: (message, fileName = null) => {
-      console.error(`[Tel Download] ${fileName ? `${fileName}: ` : ""}${message}`);
+      console.error(`[TeleVault] ${fileName ? `${fileName}: ` : ""}${message}`);
     }
   };
 
-  // Unicode values for custom icons used in Web K UI implementations
+  // Unicode value of the download icon in Web K's icon font
   const DOWNLOAD_ICON = "";
-  const FORWARD_ICON = "";
 
   const contentRangeRegex = /^bytes (\d+)-(\d+)\/(\d+)$/;
 
@@ -33,6 +33,26 @@
     if (!media) return "";
     if (media.getAttribute && media.getAttribute("src")) return media.src;
     return media.currentSrc || media.querySelector?.("source")?.src || "";
+  };
+
+  /**
+   * Telegram's "Restrict saving content" (noforwards). TeleVault never saves protected media,
+   * so every download path checks this first.
+   *  - Web K: the open chat carries `noForwards`, the media viewer hides its own download button
+   *  - Web A: protected media is covered by a `.protector` layer
+   */
+  const PROTECTED_MSG = "Bu kontent egasi tomonidan himoyalangan (saqlash cheklangan). TeleVault uni yuklab olmaydi.";
+
+  const chatProtected = () =>
+    !!(window.appImManager?.chat?.noForwards ||
+      document.querySelector(".bubbles.no-forwards, .chat.no-forwards"));
+
+  const isProtected = (root) => {
+    if (!root) return false;
+    if (root.classList?.contains("no-forwards") || root.querySelector(".protector, .no-forwards")) return true;
+    const nativeHidden = Array.from(root.querySelectorAll(".media-viewer-buttons button.btn-icon.hide"))
+      .some((b) => b.textContent === DOWNLOAD_ICON);
+    return nativeHidden;
   };
 
   const MIME_EXT = {
@@ -158,12 +178,14 @@
   window.TMD_UTILS = {
     logger,
     DOWNLOAD_ICON,
-    FORWARD_ICON,
     contentRangeRegex,
     hashCode,
     isWebK,
     sleep,
     getMediaSource,
+    PROTECTED_MSG,
+    chatProtected,
+    isProtected,
     sanitize,
     buildFileName,
     applyTemplate,

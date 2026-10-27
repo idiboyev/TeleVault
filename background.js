@@ -1,4 +1,5 @@
-// Telegram Media Downloader - background service worker
+// TeleVault — background service worker
+// Copyright (c) 2026 Adham Idiboyev (@SuperMix)
 chrome.runtime.onMessage.addListener((msg, sender) => {
   if (msg?.type === "openOptions") chrome.runtime.openOptionsPage();
   if (msg?.type === "notify" && msg.title) {

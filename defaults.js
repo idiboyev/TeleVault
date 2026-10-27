@@ -1,5 +1,6 @@
 /**
- * Telegram Media Downloader - Default settings (shared by page, bridge and options page)
+ * TeleVault — Default settings (shared by page, bridge and options page)
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  */
 (() => {
   const DEFAULTS = {

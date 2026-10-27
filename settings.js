@@ -1,5 +1,6 @@
 /**
- * Telegram Media Downloader - Settings mirror in the page (MAIN world)
+ * TeleVault — Settings mirror in the page (MAIN world)
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  */
 (() => {
   let values = globalThis.TMD_MERGE(globalThis.TMD_DEFAULTS, {});

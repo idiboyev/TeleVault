@@ -1,5 +1,6 @@
 /**
- * Telegram Media Downloader - Offline channel archive
+ * TeleVault — Offline channel archive
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  *
  * Keeps archive.json (every post ever downloaded into this folder) and regenerates a
  * self-contained index.html next to it: a searchable feed that plays the local files.
@@ -49,6 +50,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="TeleVault by Adham Idiboyev (@SuperMix)">
 <title>${esc(db.channel)} — arxiv</title>
 <style>
 :root{--bg:#F4F6F8;--card:#FFF;--line:#E3E8ED;--text:#15202B;--muted:#66788A;--accent:#1F8FE0;--soft:#E6F2FC;color-scheme:light}

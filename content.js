@@ -1,5 +1,6 @@
 /**
- * Telegram Media Downloader - Entry point
+ * TeleVault — Entry point
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  */
 (() => {
   window.TMD_UTILS.logger.info("Extension starting");

@@ -1,5 +1,6 @@
 /**
- * Telegram Media Downloader - Sequential ranged fetching
+ * TeleVault — Sequential ranged fetching
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  *
  * Runs in the page (MAIN) world, so requests to Telegram's
  * /progressive/ and /stream/ URLs are served by Telegram's own service worker.

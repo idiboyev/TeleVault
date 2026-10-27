@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maxfiylik siyosati — TeleVault</title>
+  <style>
+    :root { --bg: #F6F8FA; --surface: #FFFFFF; --line: #E2E8EE; --text: #15202B; --muted: #627386; --accent: #1F8FE0; color-scheme: light; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0F161E; --surface: #16202B; --line: #223040; --text: #E8EEF4; --muted: #8B9AAA; --accent: #4FB3F6; color-scheme: dark; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+    h1 { font-size: 26px; letter-spacing: -.01em; margin: 0 0 4px; }
+    h2 { font-size: 17px; margin: 32px 0 8px; }
+    .meta { color: var(--muted); font-size: 13px; margin: 0 0 24px; }
+    section { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px 20px 16px; margin-top: 16px; }
+    a { color: var(--accent); }
+    code { font-size: 13px; }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0 24px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>TeleVault — Maxfiylik siyosati</h1>
+  <p class="meta">Muallif: Adham Idiboyev (@SuperMix) · Oxirgi yangilanish: 2026-yil 27-oktabr</p>
+
+  <section>
+    <h2>Qisqacha</h2>
+    <p>TeleVault hech qanday ma'lumotni muallifga yoki uchinchi tomonga yubormaydi. Kengaytmaning o'z serveri, analitikasi, reklamasi va kuzatuv kodi yo'q. Barcha ma'lumotlar sizning brauzeringizda va siz tanlagan papkada qoladi.</p>
+
+    <h2>Qaysi ma'lumotlar saqlanadi</h2>
+    <ul>
+      <li><b>Sozlamalar</b> — <code>chrome.storage.sync</code> ichida.</li>
+      <li><b>Yuklash tarixi va statistika</b> — qaysi post yuklangani (chat va post raqami), kanal nomi, fayllar soni va hajmi. <code>chrome.storage.local</code> ichida, faqat shu kompyuterda.</li>
+      <li><b>Kanal belgilari</b> — "Yangilarini yuklash" uchun oxirgi yuklangan post raqami, sanasi va kanal nomi (48 belgigacha). "Boshqa kompyuterlar bilan sinxronlash" yoqilgan bo'lsa, <code>chrome.storage.sync</code> orqali Google hisobingizdagi boshqa Chrome brauzerlaringizga o'tadi. Bu Google'ning o'z sinxronlash xizmati; TeleVault uni o'qiy oladigan alohida server ishlatmaydi.</li>
+      <li><b>Tanlangan papka</b> — papkaga kirish ruxsati brauzerning IndexedDB'sida saqlanadi. Ruxsatni istalgan vaqt brauzer sozlamalarida bekor qilishingiz mumkin.</li>
+      <li><b>Yuklangan fayllar</b> — faqat siz tanlagan papkaga yoki Chrome yuklamalariga yoziladi.</li>
+    </ul>
+
+    <h2>Nimalar o'qilmaydi va yuborilmaydi</h2>
+    <ul>
+      <li>Telegram parolingiz, sessiya kalitlari va telefon raqamingiz o'qilmaydi.</li>
+      <li>Shaxsiy xabarlaringiz matni hech qayerga yuborilmaydi. Post matni faqat siz "Post matnini saqlash" yoki "Oflayn arxiv"ni yoqsangiz, sizning papkangizga yoziladi.</li>
+      <li>Brauzer tarixi, boshqa saytlar va cookie'lar o'qilmaydi. Kengaytma faqat <code>web.telegram.org</code>, <code>webk.telegram.org</code> va <code>webz.telegram.org</code> sahifalarida ishlaydi.</li>
+      <li>Ma'lumotlar sotilmaydi, reklama uchun ishlatilmaydi va kredit qobiliyatini aniqlash kabi maqsadlarda foydalanilmaydi.</li>
+    </ul>
+
+    <h2>Himoyalangan kontent</h2>
+    <p>Kanal yoki guruh egasi "Restrict saving content" (kontentni saqlashni cheklash) ni yoqqan bo'lsa, TeleVault bu kontentni yuklab olmaydi va Telegram yashirgan tugmalarni ochmaydi.</p>
+
+    <h2>Ruxsatlar</h2>
+    <ul>
+      <li><code>storage</code> — sozlamalar, yuklash tarixi va kanal belgilarini saqlash uchun.</li>
+      <li><code>notifications</code> — yuklash tugaganda tizim bildirishnomasini ko'rsatish uchun (sozlamalarda o'chirsa bo'ladi).</li>
+      <li>Telegram Web sahifalariga kirish — yuklash tugmalari va kanal skanerini shu sahifalarga qo'shish uchun.</li>
+    </ul>
+
+    <h2>Ma'lumotlarni o'chirish</h2>
+    <p>Sozlamalar → Ma'lumotlar bo'limida tarix va statistikani tozalash mumkin. Kengaytmani o'chirsangiz, brauzerdagi barcha TeleVault ma'lumotlari ham o'chadi. Yuklangan fayllar sizning papkangizda qoladi.</p>
+
+    <h2>Aloqa</h2>
+    <p>Savollar bo'yicha: <a href="https://github.com/idiboyev/TeleVault/issues" target="_blank" rel="noopener">github.com/idiboyev/TeleVault/issues</a></p>
+  </section>
+
+  <hr>
+
+  <h1>TeleVault — Privacy Policy</h1>
+  <p class="meta">Author: Adham Idiboyev (@SuperMix) · Last updated: October 27, 2026</p>
+  <section>
+    <h2>Summary</h2>
+    <p>TeleVault does not send any data to its author or to any third party. It has no server, analytics, ads or tracking code. Everything stays in your browser and in the folder you choose.</p>
+    <h2>Data stored</h2>
+    <ul>
+      <li>Settings, in <code>chrome.storage.sync</code>.</li>
+      <li>Download history and statistics (chat and post IDs, channel names, file counts and sizes), in <code>chrome.storage.local</code> on this computer only.</li>
+      <li>Channel checkpoints (last downloaded post ID, date, channel name up to 48 characters). If "Sync with other computers" is on, they are synced to your other Chrome browsers through Google's own <code>chrome.storage.sync</code>.</li>
+      <li>The folder you pick, as a browser file-system permission in IndexedDB.</li>
+      <li>Downloaded files, written only to your chosen folder or Chrome downloads.</li>
+    </ul>
+    <h2>Not collected</h2>
+    <p>No passwords, session keys or phone numbers. No message text leaves your computer. No browsing history or cookies. The extension runs only on Telegram Web. Data is never sold, used for advertising, or used to determine creditworthiness. Use of data complies with the Chrome Web Store User Data Policy, including the Limited Use requirements.</p>
+    <h2>Protected content</h2>
+    <p>When a channel or group owner enables "Restrict saving content", TeleVault does not download that content and does not reveal buttons Telegram has hidden.</p>
+    <h2>Contact</h2>
+    <p><a href="https://github.com/idiboyev/TeleVault/issues" target="_blank" rel="noopener">github.com/idiboyev/TeleVault/issues</a></p>
+  </section>
+  <p class="meta" style="margin-top:24px">TeleVault is an independent project and is not affiliated with, endorsed by, or sponsored by Telegram.</p>
+</main>
+</body>
+</html>

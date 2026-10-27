@@ -1,4 +1,5 @@
-/* Telegram Media Downloader - options page */
+/* TeleVault — options page
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix) */
 (() => {
   const DEFAULTS = globalThis.TMD_DEFAULTS;
   const merge = globalThis.TMD_MERGE;
@@ -251,7 +252,7 @@
   };
   $("#export").onclick = () => {
     const url = URL.createObjectURL(new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" }));
-    const a = Object.assign(document.createElement("a"), { href: url, download: "tmd-settings.json" });
+    const a = Object.assign(document.createElement("a"), { href: url, download: "televault-settings.json" });
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
   };

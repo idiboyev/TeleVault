@@ -1,5 +1,6 @@
 /**
- * Telegram Media Downloader - Channel scanner & bulk download queue
+ * TeleVault — Channel scanner & bulk download queue
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  *
  * Two adapters:
  *  - webkApi: Web K exposes its managers on window, so we read channel history
@@ -58,9 +59,20 @@
     peer() {
       return { id: String(window.appImManager.chat.peerId), title: headerTitle() };
     },
+    /** True if the chat has "Restrict saving content" turned on. */
+    async isProtected(peerId) {
+      const m = window.rootScope.managers;
+      try {
+        if (m.appPeersManager?.noForwards && (await m.appPeersManager.noForwards(peerId))) return true;
+      } catch (e) {}
+      try {
+        if (peerId < 0) return !!(await m.appChatsManager.getChat(-peerId))?.pFlags?.noforwards;
+      } catch (e) {}
+      return false;
+    },
     toItem(msg, peerId) {
       const media = msg?.media;
-      if (!media) return null;
+      if (!media || msg.pFlags?.noforwards) return null; // protected post — never saved
       const base = {
         key: `${peerId}_${msg.mid}`,
         id: msg.id ?? msg.mid,
@@ -100,6 +112,7 @@
       // forPeer lets "update all channels" read a chat that isn't open
       const peerId = forPeer != null ? Number(forPeer) : window.appImManager.chat.peerId;
       const sinceMid = Number(since?.mid) || 0; // "only new": stop at the last downloaded post
+      if (await this.isProtected(peerId)) throw new Error(U().PROTECTED_MSG);
       const m = window.rootScope.managers.appMessagesManager;
       const from = filter.dateFrom ? Date.parse(filter.dateFrom) / 1000 : 0;
       const to = filter.dateTo ? Date.parse(filter.dateTo) / 1000 + 86400 : Infinity;
@@ -315,6 +328,7 @@
     async scan({ limit, signal, onProgress, filter, since }) {
       const sinceDate = Number(since?.date) || 0;
       let knownInRow = 0;
+      if (U().chatProtected()) throw new Error(U().PROTECTED_MSG);
       if (!viewerDom()) {
         if (!openLatestMedia()) throw new Error("Chatda media topilmadi. Biror rasm yoki videoni oching va qayta urinib ko'ring.");
         await waitFor(() => viewerDom(), 6000, signal);
@@ -337,7 +351,8 @@
 
         lastSig = c.sig;
         scanned++;
-        if (!seen.has(c.item.key)) {
+        // Protected posts are passed over, never collected
+        if (!seen.has(c.item.key) && !U().isProtected(c.v.root)) {
           seen.add(c.item.key);
           const d = c.item.date;
           const from = filter.dateFrom ? Date.parse(filter.dateFrom) / 1000 : 0;

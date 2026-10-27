@@ -1,222 +1,76 @@
-# Telegram Media Downloader — Browser Extension
+# TeleVault
 
-A lightweight, high-performance Manifest V3 browser extension for downloading images, GIFs, videos, stories, and voice messages directly from Telegram Web (web.telegram.org).
+**TeleVault** — Telegram Web uchun media arxivlash kengaytmasi (Chrome, Manifest V3).
+Muallif va dasturchi: **Adham Idiboyev** ([@SuperMix](https://github.com/idiboyev)).
 
-This extension is specifically engineered to safely download private, restricted, or otherwise non-downloadable media from Telegram channels and groups that have strict download restrictions or the restrict saving content toggle enabled.
+Kanal yoki guruhni skanerlaydi, media turlari bo'yicha ajratadi va tanlanganlarini kompyuteringizdagi papkaga tartib bilan saqlaydi: fayl nomi shablonlari, papka tuzilmasi, faqat yangilarini yuklash, oflayn arxiv (`index.html`) va statistika.
 
-Designed to integrate seamlessly with the Telegram Web interface (supporting both Web K and Web Z clients) while maintaining a modern, efficient, and secure architecture based entirely on native browser APIs.
-
----
-
-# Features
-
-## Bypass Restriction Locks Safely
-
-When private channels enforce the restrict saving content policy, Telegram still must transmit the raw video and image data fragments to your browser so you can view them.
-
-This extension works entirely locally inside your browser cache. It detects the media chunks already sent to your screen, stitches them together sequentially, and lets you save them directly to your hard drive. Because it acts as a normal viewer buffering media on screen, it is 100% invisible to Telegram's anti-bot/anti-scraping detection.
+> TeleVault mustaqil loyiha. Telegram bilan bog'liq emas, Telegram tomonidan tasdiqlanmagan yoki homiylik qilinmagan. "Telegram" — Telegram FZ-LLC'ning savdo belgisi.
 
 ---
 
-## High-Performance Downloader
+## Himoyalangan kontent
 
-Downloads large media files sequentially using 2MB HTTP Range requests.
+Kanal yoki guruh egasi **"Restrict saving content"** (kontentni saqlashni cheklash) ni yoqqan bo'lsa, TeleVault:
 
-Streams and caches media fragments locally without crashing your browser tab's RAM.
+- bu chatda yuklash tugmalarini qo'shmaydi va Telegram yashirgan tugmalarni ochmaydi;
+- skanerda bunday chatni yuklamaydi, alohida himoyalangan postlarni o'tkazib yuboradi.
 
-Employs Chromium's high-priority networking (`priority: "high"`) for maximum bandwidth speed.
-
-Bypasses the connection overhead lag that previously capped download speeds.
-
----
-
-## Native MutationObserver Engine
-
-Unlike traditional userscripts that continuously poll the page using CPU-heavy `setInterval` loops, this extension relies on the browser's native:
-
-- MutationObserver
-- Event-driven DOM detection
-
-### Benefits
-
-- Near-zero idle CPU usage.
-- Lower memory footprint.
-- Instant detection of newly opened media overlays.
-- Seamless browser performance.
+Kengaytmadan faqat o'zingizga tegishli yoki saqlashga ruxsat berilgan kontent uchun foydalaning. Mualliflik huquqi va Telegram [foydalanish shartlari](https://telegram.org/tos)ga rioya qilish foydalanuvchi zimmasida.
 
 ---
 
-## Manifest V3 Native
+## Imkoniyatlar
 
-Built from the ground up to follow the modern security standards of Manifest V3.
+- **Media ko'ruvchidagi tugma** — rasm, video, hikoya yoki ovozli xabarni ochganda yuklab olish tugmasi.
+- **Kanal skaneri** (`Alt+Shift+D`) — oxirgi N ta post, tur bo'yicha filtr, qidiruv, saralash.
+- **Papkaga saqlash** — bir marta papka tanlanadi, fayllar diskka bo'laklab yoziladi, uzilgan yuklash davom ettiriladi.
+- **Faqat yangilari, ko'p kanal, avtomatik kuzatuv, oflayn arxiv, statistika** — batafsil quyidagi versiyalar tarixida.
 
-- No bulky userscript managers required.
-- No Tampermonkey/Greasyfork runtime dependencies.
-- No third-party script injection.
+## Maxfiylik
 
----
+TeleVault hech qanday ma'lumotni muallifga yoki uchinchi tomonga yubormaydi: serveri, analitikasi va reklamasi yo'q. Batafsil: [privacy.html](privacy.html).
 
-## Zero Permissions
+| Ruxsat | Nima uchun |
+|---|---|
+| `storage` | Sozlamalar, yuklash tarixi, kanal belgilari |
+| `notifications` | Yuklash tugaganda bildirishnoma (o'chirsa bo'ladi) |
+| Telegram Web sahifalari | Tugmalar va skaner panelini shu sahifalarga qo'shish |
 
-The extension is designed with a "Privacy First" mindset and declares:
+## O'rnatish (ishlab chiquvchi rejimi)
 
-```json
-"permissions": []
-```
+1. `chrome://extensions` ni oching.
+2. **Developer mode** ni yoqing.
+3. **Load unpacked** → shu papkani tanlang.
 
-It does not request access to your browsing history, cookies, tabs, browser storage, or background service workers. Everything executes strictly on top of your current active local Telegram Web session.
+Talab: Chrome 111+.
 
----
-
-# Project Structure
+## Fayllar
 
 ```text
-telegram-media-downloader/
-│
-├── manifest.json      # Extension manifest (MV3 compliant)
-├── content.js         # Main orchestrator injection script
-├── downloader.js      # High-speed sequential range-fetch downloading engine
-├── observer.js        # Performance DOM MutationObserver layout listener
-├── ui.js              # Floating media download progress HUD dashboard
-├── utils.js           # Shared logging, cryptographic hashers, and helpers
-└── styles.css         # Modular progress HUD styling
+manifest.json   Kengaytma manifesti
+background.js   Bildirishnomalar, sozlamalar sahifasini ochish
+bridge.js       chrome.storage ↔ sahifa ko'prigi
+observer.js     Media ko'ruvchiga tugmalar qo'shish
+scanner.js      Kanal skaneri va yuklash navbati
+panel.js        Skaner paneli (Shadow DOM)
+archive.js      Oflayn arxiv (index.html)
+downloader.js   Bo'laklab yuklash
+options.*       Sozlamalar sahifasi
+privacy.html    Maxfiylik siyosati
 ```
 
----
+## Muallif va litsenziya
 
-# Installation
+© 2026 Adham Idiboyev (@SuperMix). Batafsil: [LICENSE](LICENSE).
 
-Since this project is distributed as a lightweight, unpackaged extension, installation only takes a minute:
-
-
-## 2. Open Extensions Page
-
-Open your Chromium-based desktop browser and visit the extensions dashboard URL:
-
-### Google Chrome
-
-```
-chrome://extensions
-```
-
-### Brave Browser
-
-```
-brave://extensions
-```
-
-### Microsoft Edge
-
-```
-edge://extensions
-```
-
-### Opera / Vivaldi
-
-```
-opera://extensions
-vivaldi://extensions
-```
+Media ko'ruvchiga tugma qo'shish va bo'laklab yuklash qismi ochiq kodli [Neet-Nestor/Telegram-Media-Downloader](https://github.com/Neet-Nestor/Telegram-Media-Downloader) (GPL-3.0) loyihasiga asoslangan.
 
 ---
 
-## 3. Enable Developer Mode
+# Versiyalar tarixi
 
-Locate the Developer Mode toggle switch (usually found in the top-right corner of the workspace dashboard) and turn it ON.
-
----
-
-## 4. Load the Extension
-
-Click the **Load unpacked** button in the top-left corner, select your local `telegram-media-downloader` folder, and click **Open**. The extension will initialize immediately.
-
----
-
-# Usage
-
-## Images
-
-Open any image (even restricted private channel ones) inside Telegram Web. A dedicated download icon button is injected into the media viewer header toolbar. Click it to save the image.
-
----
-
-## Videos
-
-Open a video. A custom download button is injected directly into the video player control dashboard bar. Click it to save the video. For larger videos, the progress HUD will display the real-time download status.
-
----
-
-## Voice Messages
-
-Open a chat thread containing voice or audio messages. A sleek download button appears natively next to the audio/voice notification bubble, allowing direct extraction.
-
----
-
-## Stories
-
-Open any Telegram story slide. A clean download button is injected directly into the story's upper/lower utility action rows.
-
----
-
-
----
-
-# How It Works
-
-Large media is fetched sequentially to keep memory usage low and downloads stable. The engine cuts the file into explicit 2MB segments and fetches them piece-by-piece:
-
-```text
-Range: bytes=0-2097151
-Range: bytes=2097152-4194303
-Range: bytes=4194304-6291455
-```
-
-Each chunk is temporarily cached in your browser as a blob, and when the final block completes, they are merged natively into a single playable `.mp4` or `.ogg` file. This sequential approach prevents memory spikes, allows faster download speeds, and ensures 100% account safety.
-
----
-
-# Safety
-
-### No Data Exfiltration
-
-Runs completely locally inside your browser sandbox. It does not contact any external database, server, or tracking endpoint.
-
-### Normal Browser Footprint
-
-Because downloads occur sequentially, your network traffic mirrors standard browser buffer streaming, rendering it safe and invisible to anti-bot system triggers.
-
-### Secure Authentication
-
-No login details, password hashes, or session tokens are ever read or handled.
-
----
-
-# Browser Support
-
-- Google Chrome
-- Brave Browser
-- Microsoft Edge
-- Opera
-- Vivaldi
-- Other Chromium-based browsers
-
----
-
-# Development
-
-Contributions, bug reports, and suggestions are welcome! Feel free to:
-
-- Fork the repository workspace
-- Submit Pull Requests to address changing Telegram CSS layout classes
-- Log layout edge cases in the Issues panel
-
----
-
-# Disclaimer
-
-This project is intended strictly for educational, research, and private personal backup use. Users are responsible for ensuring that their use of this extension complies with applicable local copyright laws, intellectual property regulations, and platform usage policies.
-
-## 2.0 — Kanal skaneri va sozlamalar
+### 2.0 — Kanal skaneri va sozlamalar
 
 **Kanal skaneri** — Telegram Web'da kanalni oching va pastki burchakdagi tugmani bosing (yoki `Alt+Shift+D`).
 
@@ -234,7 +88,7 @@ This project is intended strictly for educational, research, and private persona
 
 Talab: Chrome 111+.
 
-## 2.1 — Faqat yangilarini yuklash
+### 2.1 — Faqat yangilarini yuklash
 
 Kanaldan yuklab olganingizda oxirgi yuklangan post eslab qolinadi. Keyingi safar panelda **Yangilarini yuklash** tugmasi chiqadi:
 
@@ -246,14 +100,14 @@ Kanaldan yuklab olganingizda oxirgi yuklangan post eslab qolinadi. Keyingi safar
 
 Belgini panelda yoki Sozlamalar → **Yangilari** bo'limida har bir kanal uchun alohida tozalash mumkin.
 
-## 2.2 — Ko'p kanal, davom ettirish, albomlar, papka tuzilmasi
+### 2.2 — Ko'p kanal, davom ettirish, albomlar, papka tuzilmasi
 
 - **Kanallar** (panelda yangi tab, faqat Web K): yuklangan barcha kanallar ro'yxati. Keraklilarini belgilab **Tanlanganlarni yangilash** bosiladi — har bir kanaldan faqat oxirgi yuklashdan keyingi media yuklanadi, chatlarni ochish shart emas.
 - **Uzilgan yuklashni davom ettirish** (papka rejimi): tarmoq uzilsa yoki "To'xtatish" bosilsa, yozilgan qism saqlanib qoladi. Keyingi urinishda fayl boshidan emas, to'xtagan joyidan davom etadi (ro'yxatda `davom` belgisi).
 - **Albomlar**: bitta postdagi bir nechta media "Albom 2/5" deb belgilanadi. Fayl nomi uchun `{album}` va `{n}` teglari qo'shildi.
 - **Papka tuzilmasi**: Sozlamalar → Yuklab olish → *Papka tuzilmasi*. Masalan `{year}-{month}/{type}` yoki `{album}`. Teglar: `{year} {month} {day} {date} {type} {album}`.
 
-## 3.0 — To'liq arxivlash vositasi
+### 3.0 — To'liq arxivlash vositasi
 
 **Yuklash jarayoni**
 - **Tezlik va qolgan vaqt** — footerda `5.7 MB/s · ~3 daq qoldi`, umumiy progress baytlar bo'yicha.
@@ -274,3 +128,9 @@ Belgini panelda yoki Sozlamalar → **Yangilari** bo'limida har bir kanal uchun 
 **Natija**
 - **Oflayn arxiv** — kanal papkasida `index.html`: postlar matni, albomlar, rasm/video/audio pleyer, qidiruv va tur filtrlari. Har yuklashda to'ldiriladi (`archive.json`).
 - **Statistika** — Sozlamalar → Statistika: jami fayllar, hajm, kanallar bo'yicha turlar taqsimoti.
+
+### 3.1.0 — TeleVault
+
+- Yangi nom: **TeleVault**. Muallif: Adham Idiboyev (@SuperMix).
+- Himoyalangan ("Restrict saving content") chatlar va postlar endi yuklanmaydi; Telegram yashirgan tugmalar ochilmaydi.
+- Maxfiylik siyosati (`privacy.html`) qo'shildi.

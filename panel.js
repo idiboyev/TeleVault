@@ -1,5 +1,6 @@
 /**
- * Telegram Media Downloader - Channel scanner panel (rendered inside a Shadow DOM)
+ * TeleVault — Channel scanner panel (rendered inside a Shadow DOM)
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  */
 (() => {
   const U = () => window.TMD_UTILS;
@@ -1139,8 +1140,8 @@
     shadow = host.attachShadow({ mode: "open" });
     shadow.innerHTML = `<style>${STYLES}</style>
     <div class="root">
-      <button class="launcher" title="Kanal skaneri (Alt+Shift+D)" aria-label="Kanal skanerini ochish">${icon("download", 21)}<span class="badge" hidden></span></button>
-      <aside class="panel" hidden role="dialog" aria-label="Kanal skaneri">
+      <button class="launcher" title="TeleVault — kanal skaneri (Alt+Shift+D)" aria-label="TeleVault kanal skanerini ochish">${icon("download", 21)}<span class="badge" hidden></span></button>
+      <aside class="panel" hidden role="dialog" aria-label="TeleVault kanal skaneri">
         <header>
           <div class="who"><h2></h2><p></p></div>
           <button class="icon-btn" data-act="settings" title="Sozlamalar" aria-label="Sozlamalar">${icon("settings")}</button>

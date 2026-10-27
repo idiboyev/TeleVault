@@ -1,6 +1,7 @@
 (() => {
 /**
- * Telegram Media Downloader - Progress Bar UI Engine & Components builder
+ * TeleVault — Progress Bar UI Engine & Components builder
+ * Copyright (c) 2026 Adham Idiboyev (@SuperMix)
  */
 
 const setupProgressBarContainer = () => {
