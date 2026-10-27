@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sozlamalar — Telegram Media Downloader</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">
+        <img src="icons/48.png" width="32" height="32" alt="">
+        <div>
+          <strong>Media Downloader</strong>
+          <span id="version"></span>
+        </div>
+      </div>
+      <nav aria-label="Bo'limlar">
+        <a href="#panel" class="active">Panel</a>
+        <a href="#scan">Skaner</a>
+        <a href="#download">Yuklab olish</a>
+        <a href="#sync">Yangilari</a>
+        <a href="#stats">Statistika</a>
+        <a href="#data">Ma'lumotlar</a>
+      </nav>
+      <p class="kbd-hint">Telegram Web'da skanerni ochish: <kbd>Alt</kbd> <kbd>Shift</kbd> <kbd>D</kbd></p>
+    </aside>
+
+    <main>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+
+      <section id="panel">
+        <h1>Panel</h1>
+        <p class="lead">Skaner paneli Telegram Web ichida qayerda va qanday ko'rinishini belgilang.</p>
+
+        <div class="group">
+          <div class="row">
+            <div class="label"><h3>Ochish tugmasi</h3><p>Ekran burchagida doimiy tugma. O'chirsangiz, panel faqat Alt+Shift+D bilan ochiladi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="ui.showLauncher"><span></span></label>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Joylashuv</h3><p>Panel ekranning qaysi tomonida ochilsin.</p></div>
+            <div class="seg" data-key="ui.panelSide">
+              <button value="left">Chapda</button><button value="right">O'ngda</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Mavzu</h3><p>Avtomatik rejim Telegram'ning tungi/kunduzgi mavzusiga moslashadi.</p></div>
+            <div class="seg" data-key="ui.theme">
+              <button value="auto">Avto</button><button value="light">Kunduzgi</button><button value="dark">Tungi</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Media ko'ruvchidagi tugmalar</h3><p>Rasm yoki videoni ochganda yuklab olish tugmasini qo'shadi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="ui.inlineButtons"><span></span></label>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Kichik rasmlar</h3><p>Skaner ro'yxatida har bir media yonida uning kichik ko'rinishi chiqadi (Web K).</p></div>
+            <label class="switch"><input type="checkbox" data-key="ui.thumbnails"><span></span></label>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Bildirishnomalar</h3><p>Yuklash tugaganda yoki kuzatuv yangi media topganda, boshqa oynada bo'lsangiz ham xabar keladi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="ui.notify"><span></span></label>
+          </div>
+        </div>
+      </section>
+
+      <section id="scan">
+        <h1>Skaner</h1>
+        <p class="lead">Web K'da kanal tarixi to'g'ridan-to'g'ri o'qiladi. Web A'da esa media ko'ruvchi birma-bir varaqlanadi va faqat rasm hamda videolar topiladi. To'liq skan uchun Web K'ni tavsiya qilamiz.</p>
+
+        <div class="group">
+          <div class="row">
+            <div class="label"><h3>Postlar soni</h3><p>Eng yangi postdan boshlab nechtasi tekshirilsin.</p></div>
+            <div class="range">
+              <input type="range" min="100" max="20000" step="100" data-key="scan.maxPosts" data-num>
+              <output data-for="scan.maxPosts"></output>
+            </div>
+          </div>
+          <div class="row stack">
+            <div class="label"><h3>Media turlari</h3><p>Faqat belgilangan turlar natijada ko'rinadi.</p></div>
+            <div class="types" id="types"></div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Sana oralig'i</h3><p>Bo'sh qoldirilsa, butun tarix ko'riladi.</p></div>
+            <div class="dates">
+              <input type="date" data-key="scan.dateFrom" aria-label="Qaysi sanadan">
+              <span>—</span>
+              <input type="date" data-key="scan.dateTo" aria-label="Qaysi sanagacha">
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Minimal hajm</h3><p>Bundan kichik fayllar ro'yxatga kirmaydi. 0 bo'lsa, cheklov yo'q.</p></div>
+            <div class="num"><input type="number" min="0" max="10000" step="1" data-key="scan.minSizeMB" data-num><span>MB</span></div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Davomiylik</h3><p>Video va audiolar uchun, daqiqada. 0 — cheklovsiz. Rasmlarga ta'sir qilmaydi.</p></div>
+            <div class="dates">
+              <div class="num"><input type="number" min="0" max="10000" step="1" data-key="scan.minDurationMin" data-num aria-label="Kamida"><span>daq</span></div>
+              <span>—</span>
+              <div class="num"><input type="number" min="0" max="10000" step="1" data-key="scan.maxDurationMin" data-num aria-label="Ko'pi bilan"><span>daq</span></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Fayl kengaytmalari</h3><p>Faqat shu turdagi fayllar, vergul bilan. Masalan: <code>pdf, zip, mp3</code>. Bo'sh — hammasi.</p></div>
+            <input class="text" type="text" data-key="scan.extensions" spellcheck="false" placeholder="pdf, zip">
+          </div>
+          <div class="row">
+            <div class="label"><h3>Kalit so'zlar</h3><p>Post matnida shulardan biri bo'lsa. Vergul bilan, hashtag ham bo'ladi: <code>dars, #python</code>.</p></div>
+            <input class="text" type="text" data-key="scan.keywords" spellcheck="false" placeholder="dars, #python">
+          </div>
+          <div class="row">
+            <div class="label"><h3>Forward qilingan postlar</h3><p>Boshqa kanallardan ulashilgan postlar.</p></div>
+            <div class="seg" data-key="scan.forwarded">
+              <button value="all">Hammasi</button><button value="only">Faqat forward</button><button value="exclude">Forwardsiz</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Sahifalar orasidagi pauza</h3><p>Telegram so'rovlarni cheklamasligi uchun. Katta kanallarda 300 ms va undan ko'p qo'yish tavsiya etiladi.</p></div>
+            <div class="num"><input type="number" min="0" max="5000" step="50" data-key="scan.pageDelay" data-num><span>ms</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="download">
+        <h1>Yuklab olish</h1>
+        <p class="lead">Fayllar qayerga va qaysi nom bilan saqlanishi.</p>
+
+        <div class="group">
+          <div class="row">
+            <div class="label"><h3>Saqlash usuli</h3><p>Papka rejimida bir marta papka tanlaysiz, fayllar diskka bo'laklab yoziladi. Katta videolar ham xotirani to'ldirmaydi.</p></div>
+            <div class="seg" data-key="download.saveMode">
+              <button value="folder">Papkaga</button><button value="browser">Chrome yuklamalari</button>
+            </div>
+          </div>
+          <div class="row" data-show="download.saveMode=folder">
+            <div class="label"><h3>Kanal nomi bilan papka</h3><p>Har bir kanal uchun tanlangan papka ichida alohida papka ochiladi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="download.channelSubfolder"><span></span></label>
+          </div>
+          <div class="row stack">
+            <div class="label"><h3>Fayl nomi shabloni</h3><p>Qo'shish uchun tegni bosing. Kengaytma avtomatik qo'shiladi.</p></div>
+            <div class="template">
+              <input type="text" data-key="download.template" spellcheck="false" aria-label="Fayl nomi shabloni">
+              <div class="tokens" id="tokens"></div>
+              <p class="preview">Namuna: <code id="preview"></code></p>
+            </div>
+          </div>
+          <div class="row stack" data-show="download.saveMode=folder">
+            <div class="label"><h3>Papka tuzilmasi</h3><p>Fayllar ichki papkalarga taqsimlanadi. Bo'sh qoldirilsa, hammasi bitta papkaga tushadi. <code>/</code> — yangi daraja. <code>{album}</code> faqat albomdagi postlar uchun papka ochadi.</p></div>
+            <div class="template">
+              <input type="text" data-key="download.folderTemplate" spellcheck="false" placeholder="Masalan: {year}-{month}/{type}" aria-label="Papka tuzilmasi shabloni">
+              <div class="tokens" id="presets"></div>
+              <div class="tokens" id="ftokens"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Bir vaqtda yuklash</h3><p>Ko'p qo'yilsa, tezroq bo'ladi, lekin Telegram cheklashi mumkin.</p></div>
+            <div class="seg" data-key="download.concurrency" data-num>
+              <button value="1">1</button><button value="2">2</button><button value="3">3</button><button value="4">4</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Bo'lak hajmi</h3><p>Har bir so'rovda yuklanadigan qism.</p></div>
+            <div class="seg" data-key="download.chunkMB" data-num>
+              <button value="1">1 MB</button><button value="2">2 MB</button><button value="4">4 MB</button><button value="8">8 MB</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Fayllar orasidagi pauza</h3></div>
+            <div class="num"><input type="number" min="0" max="10000" step="100" data-key="download.delayMs" data-num><span>ms</span></div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Qayta urinishlar</h3><p>Xato bo'lganda fayl necha marta qayta yuklansin.</p></div>
+            <div class="num"><input type="number" min="0" max="5" step="1" data-key="download.retries" data-num><span>marta</span></div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Yuklanganlarini o'tkazib yuborish</h3><p>Avval yuklangan fayllar yoki papkada bor fayllar qayta yuklanmaydi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="download.skipDownloaded"><span></span></label>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Takroriy fayllarni o'tkazib yuborish</h3><p>Bir xil fayl boshqa postda yoki boshqa kanalda forward qilingan bo'lsa, ikkinchi marta yuklanmaydi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="download.skipDuplicates"><span></span></label>
+          </div>
+          <div class="row" data-show="download.saveMode=folder">
+            <div class="label"><h3>Oflayn arxiv</h3><p>Kanal papkasida <code>index.html</code> yaratiladi: postlar matni, rasm va videolar bilan, qidiruv va filtrlar bilan. Har yuklashda to'ldirib boriladi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="download.archive"><span></span></label>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Post matnini saqlash</h3><p>Har bir fayl yonida o'sha nomdagi .txt faylga post matni yoziladi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="download.saveCaptions"><span></span></label>
+          </div>
+        </div>
+      </section>
+
+      <section id="sync">
+        <h1>Yangilarini yuklash</h1>
+        <p class="lead">Kanaldan yuklab olganingizda oxirgi yuklangan post eslab qolinadi. Keyingi safar paneldagi <b>Yangilarini yuklash</b> tugmasi tarixni faqat shu postgacha o'qiydi va undan keyin chiqqan medialarni yuklaydi.</p>
+        <div class="group">
+          <div class="row">
+            <div class="label"><h3>Topilganini darhol yuklash</h3><p>O'chirsangiz, yangi medialar faqat belgilanadi va "Yuklab olish"ni o'zingiz bosasiz.</p></div>
+            <label class="switch"><input type="checkbox" data-key="sync.autoDownload"><span></span></label>
+          </div>
+          <div class="row" data-show="download.saveMode=folder">
+            <div class="label"><h3>Papkani eslab qolish</h3><p>Tanlangan papka saqlanadi, har safar qayta so'ralmaydi. Brauzer ruxsat so'rasa, bir marta tasdiqlaysiz.</p></div>
+            <label class="switch"><input type="checkbox" data-key="sync.rememberFolder"><span></span></label>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Kuzatuv oralig'i</h3><p>Kuzatiladigan kanallar (paneldagi ko'z belgisi) Telegram Web ochiq turganda shuncha daqiqada bir tekshiriladi.</p></div>
+            <div class="num"><input type="number" min="5" max="1440" step="5" data-key="sync.watchMinutes" data-num><span>daq</span></div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Boshqa kompyuterlar bilan sinxronlash</h3><p>Kanal belgilari Chrome hisobingiz orqali boshqa kompyuterga o'tadi. U yerda ham "Yangilarini yuklash" shu joydan davom etadi.</p></div>
+            <label class="switch"><input type="checkbox" data-key="sync.cloud"><span></span></label>
+          </div>
+          <div class="row stack">
+            <div class="label"><h3>Kanallar</h3><p id="cpInfo"></p></div>
+            <ul class="cps" id="cps"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="stats">
+        <h1>Statistika</h1>
+        <p class="lead">Extension orqali yuklangan fayllar. Qaysi kanaldan qancha va qanday turdagi media olingani.</p>
+        <div class="tiles" id="tiles"></div>
+        <div class="group" id="statList"></div>
+        <p class="legend" id="legend"></p>
+      </section>
+
+      <section id="data">
+        <h1>Ma'lumotlar</h1>
+        <p class="lead">Yuklash tarixi va sozlamalarni zaxiralash.</p>
+        <div class="group">
+          <div class="row">
+            <div class="label"><h3>Yuklash tarixi</h3><p id="historyInfo"></p></div>
+            <button class="btn" id="clearHistory">Tarixni tozalash</button>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Statistika</h3><p>Yuklangan fayllar soni va hajmi bo'yicha hisob. Fayllarning o'ziga ta'sir qilmaydi.</p></div>
+            <button class="btn" id="clearStats">Statistikani tozalash</button>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Sozlamalarni eksport qilish</h3><p>JSON faylga saqlab, boshqa kompyuterga ko'chirishingiz mumkin.</p></div>
+            <div class="btns">
+              <button class="btn" id="export">Eksport</button>
+              <label class="btn">Import<input type="file" accept="application/json" id="import" hidden></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><h3>Standart sozlamalar</h3><p>Barcha qiymatlar boshlang'ich holatga qaytadi. Tarix o'chmaydi.</p></div>
+            <button class="btn danger" id="reset">Tiklash</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="defaults.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

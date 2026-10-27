@@ -1,0 +1,87 @@
+/* Progress Bar Layout Architecture Zone */
+#tel-downloader-progress-bar-container {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  pointer-events: none; /* Allows click events underneath empty space */
+}
+
+.tel-progress-item {
+  width: 20rem;
+  padding: 0.6rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: auto; /* Restores button operations in active rows */
+  transition: all 0.2s ease-in-out;
+}
+
+.tel-progress-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.tel-progress-item p.filename {
+  margin: 0;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 80%;
+}
+
+.tel-progress-close {
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  font-weight: bold;
+  user-select: none;
+  padding: 0 0.2rem;
+}
+
+.tel-progress-close:hover {
+  opacity: 0.8;
+}
+
+.tel-progress-bar-wrapper {
+  background-color: #e2e2e2;
+  position: relative;
+  width: 100%;
+  height: 1.6rem;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.tel-progress-counter {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  color: #000000;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.tel-progress-fill {
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  background-color: #6093B5;
+  transition: width 0.1s linear, background-color 0.3s ease;
+}
+
+/* Base style hooks to guarantee custom utility layout compatibility */
+.tel-download {
+  cursor: pointer !important;
+}
